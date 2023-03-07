@@ -8,21 +8,36 @@
 
 :root {
     --cell-size: 200px;
-    --header-height: 100px;
+    --header-height: 125px;
 }
 
 body {
     height: 100vh;
     font-family: 'Roboto';
+}
 
+header {
+    display: flex;
+    flex-direction: column;
+    height: var(--header-height);
+    box-shadow: 0px 1px 5px 1px black;
 }
 
 header h1 {
-    height: var(--header-height);
     text-align: center;
-    padding-top: 30px;
+    padding: 10px;
     letter-spacing: 5px;
-    box-shadow: 0px 1px 5px 1px black;
+    text-decoration: underline;
+}
+
+header .game-options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header .new-game {
+    padding: 10px 20px;
 }
 
 main {
@@ -34,9 +49,7 @@ main {
 
 .gameboard {
     display: grid;
-    grid-template-columns: repeat(3, var(--cell-size));
-   
-    
+    grid-template-columns: repeat(3, var(--cell-size)); 
 }   
 
 .cell {
