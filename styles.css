@@ -78,9 +78,7 @@ form button {
     margin: 0 auto;
     padding: 10px 20px;
     font-weight: bold;
-
 }
-
 
 .modal-container {
     height: 100%;
@@ -89,7 +87,7 @@ form button {
     position: absolute;
     top: 0;
     left: 0;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     
@@ -105,7 +103,13 @@ form button {
 .gameboard {
     display: grid;
     grid-template-columns: repeat(3, var(--cell-size)); 
+    opacity: 0;
+    transition: 1s opacity ease-in-out;
 }   
+
+.gameboard.fade {
+    opacity: 1;
+}
 
 .cell {
     border: 1px solid black;
