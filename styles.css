@@ -47,6 +47,61 @@ main {
     align-items: center;
 }
 
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form span {
+    align-self: flex-end;
+    font-size: 12px;
+    border: 2px solid black;
+    border-radius: 50%;
+    padding: 2px 6px;
+    cursor: pointer;
+}
+
+form div{
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0px;
+}
+
+form input[type="text"] {
+    padding: 8px 10px;
+    margin-top: 10px;
+    font-size: 20px;
+}
+
+form button {
+    width: 125px;
+    margin: 0 auto;
+    padding: 10px 20px;
+    font-weight: bold;
+
+}
+
+
+.modal-container {
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,0.4);
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.modal {
+    background-color: rgba(255,255,255, 0.9);
+    width: 400px;
+    height: 400px;
+    padding: 20px;
+}
+
 .gameboard {
     display: grid;
     grid-template-columns: repeat(3, var(--cell-size)); 

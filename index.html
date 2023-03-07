@@ -17,17 +17,46 @@
     </header>
     <main>
         <div class="gameboard">
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
         </div>
     </main>
+
+    <div class="modal-container">
+        <div class="modal">
+            <form action="">
+                <span class="close-modal">X</span>
+                <div class="name-input-one">
+                    <label for="name-input-one">Player One</label>
+                    <input type="text" id="name-input-one" >
+                </div>
+                <div class="name-input-two">
+                    <label for="name-input-two">Player Two</label>
+                    <input type="text" id="name-input-two" >
+                </div>
+                <div class="game-mode">
+                    <fieldset>
+                        <legend>Game Mode</legend>
+                        <input type="radio" id="pvp" name="game-mode" value="pvp">
+                        <label for="pvp">Player vs Player</label>
+
+                        <input type="radio" id="ai" name="game-mode" value="ai">
+                        <label for="ai">AI</label>
+                    </fieldset>
+                </div>
+                <div class="submit">
+                    <button type="submit">Start Game</button>
+                </div>
+            </form>
+        </div>
+    </div>
     
 </body>
 </html>
