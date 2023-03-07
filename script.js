@@ -1,16 +1,20 @@
-const Player = (name, mark) => {
-    this.name = name
-    this.mark = mark;
+const Player = (playerName, playerMark) => {
+    let name = playerName
+    let mark = playerMark;
+
+    const setName = (updatedName) => {
+        name = updatedName
+    }
 
     const getName = () => {
-        return this.name;
+        return name;
     }
 
     const getMark = () => {
-        return this.mark;
+        return mark;
     }
 
-    return {getName, getMark};
+    return {getName, getMark, setName};
 }
 
 const displayController = (() => {
@@ -20,6 +24,8 @@ const displayController = (() => {
     const startGameBtnEl = document.querySelector('.start-game-btn');
     const gameBoardEl = document.querySelector('.gameboard');
     const cells = document.querySelectorAll('.cell');
+    const playerOneNameEl = document.querySelector('#name-input-one');
+    const playerTwoNameEl = document.querySelector('#name-input-two');
     
 
     newGameEl.addEventListener('click', (e) => {
@@ -34,6 +40,10 @@ const displayController = (() => {
         e.preventDefault();
         modalEl.style.display = "none";
         gameBoardEl.classList.add('fade');
+        if(playerOneNameEl.value !== "" && playerTwoNameEl.value !== ""){
+            gameController.setPlayers(playerOneNameEl.value, playerTwoNameEl.value);
+        }
+        
         initializeBoard();
 
     })
@@ -45,15 +55,23 @@ const displayController = (() => {
                 
             })
         })
-    }
-
-    
+    } 
 })();
 
 const gameController = (() => {
+    const playerOne = Player('PlayerOne', 'X');
+    const playerTwo = Player('PlayerTwo', 'O');
+
     const playRound = (cellIndex) => {
         console.log(cellIndex);
+        
     }
 
-    return {playRound};
+    const setPlayers = (playerOneName, playerTwoName) => {
+        playerOne.setName(playerOneName);
+        playerTwo.setName(playerTwoName);
+        
+    }
+
+    return {playRound, setPlayers};
 })();
