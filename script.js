@@ -62,7 +62,7 @@ const displayController = (() => {
 
     startGameBtnEl.addEventListener('click', (e) => {
         e.preventDefault();
-
+        deInitializeBoard();
         if(playerOneNameEl.value === "" || playerTwoNameEl.value === ""){
             playerOneNameEl.style.borderColor = playerOneNameEl.value === "" ? 'red' : 'green';
             playerTwoNameEl.style.borderColor = playerTwoNameEl.value === "" ? 'red' : 'green';
@@ -81,6 +81,7 @@ const displayController = (() => {
             gameBoardEl.classList.add('fade');
 
             gameBoard.resetBoard();
+            gameController.resetGame();
             resetDisplay();
             initializeBoard();
         }
@@ -97,13 +98,32 @@ const displayController = (() => {
 
     const initializeBoard = () => {
         cells.forEach(cell => {
-            cell.addEventListener('click', (e) => {
-                if(gameController.gameOver()) return;
-                gameController.playRound(e.target);
-                           
-            })
+            cell.addEventListener('click', addPlayRoundToCell)
         })
     } 
+
+    const deInitializeBoard = () => {
+        cells.forEach(cell => {
+            cell.removeEventListener('click', addPlayRoundToCell)
+        }) 
+    }
+
+    const addPlayRoundToCell = (e) => {
+        if(gameController.gameOver()) return;
+        gameController.playRound(e.target);
+                   
+    }
+
+    const checkAvailable = () => {
+        let available = [];
+        cells.forEach(cell => {
+            if(cell.innerText !== 'X' && cell.innerText !== 'O'){
+                available.push(cell);
+            }
+        })
+        
+        return available;
+    }
 
     const updateGameInfoPlayer = (currentPlayerName) => {
         gameInfoEl.innerText = `It's ${currentPlayerName}'s turn`;
@@ -119,7 +139,7 @@ const displayController = (() => {
         })
     }
 
-    return {updateGameInfoPlayer, updateGameInfoWinner};
+    return {updateGameInfoPlayer, updateGameInfoWinner, checkAvailable};
 })();
 
 const gameController = (() => {
@@ -128,6 +148,7 @@ const gameController = (() => {
     let gameMode;
     let currentPlayer = playerOne;
     let isGameOver = false;
+    let isPlayersTurn = true;
 
     const winConditions = [
         [0,1,2],
@@ -143,7 +164,15 @@ const gameController = (() => {
     const playRound = (cellEvent) => {
         if(gameMode === 'pvp'){
             playPlayerVsPlayerRound(cellEvent);
-        }     
+        }   
+        if(gameMode === 'ai-easy'){
+            playPlayerVsPlayerRound(cellEvent);
+            if(!isPlayersTurn && !isGameOver){
+                playAIEasyRound();
+            }
+            
+            
+        }  
     }
 
     const setPlayers = (playerOneName, playerTwoName) => {
@@ -164,6 +193,7 @@ const gameController = (() => {
             return;
         } else {
             cellEvent.innerText = currentPlayer.getMark();
+            isPlayersTurn = false;
         }
         gameBoard.setBoard(cellEvent.dataset.index, currentPlayer.getMark());
         if(checkForWin()){
@@ -173,6 +203,27 @@ const gameController = (() => {
         } 
         currentPlayer = currentPlayer.getMark() === 'X' ? playerTwo : playerOne;
         displayController.updateGameInfoPlayer(currentPlayer.getName());
+    }
+
+    const playAIEasyRound = () => {
+        
+      let availableCells = displayController.checkAvailable();
+      let random = Math.floor(Math.random() * availableCells.length);
+      let chosenCell = availableCells[random];
+     
+
+      chosenCell.innerText = currentPlayer.getMark();
+      gameBoard.setBoard(chosenCell.dataset.index, currentPlayer.getMark());
+
+      if(checkForWin()){
+        isGameOver = true;
+        displayController.updateGameInfoWinner(currentPlayer.getName());
+        
+        return;
+      }
+
+      currentPlayer = currentPlayer.getMark() === 'X' ? playerTwo : playerOne;
+      isPlayersTurn = true;
     }
 
 
