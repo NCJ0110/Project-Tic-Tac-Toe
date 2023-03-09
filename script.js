@@ -17,6 +17,20 @@ const Player = (playerName, playerMark) => {
     return {getName, getMark, setName};
 }
 
+const gameBoard = (() => {
+    const board = ['', '', '','', '', '','', '', '',];
+
+    const setBoard = (cellIndex, mark) => {
+        board[cellIndex] = mark;
+    }
+
+    const getBoard = (cellIndex) => {
+        return board[cellIndex];
+    }
+
+    return {setBoard, getBoard};
+})();
+
 const displayController = (() => {
     const newGameEl = document.querySelector('.new-game');
     const closeModalEl = document.querySelector('.close-modal');
@@ -26,6 +40,8 @@ const displayController = (() => {
     const cells = document.querySelectorAll('.cell');
     const playerOneNameEl = document.querySelector('#name-input-one');
     const playerTwoNameEl = document.querySelector('#name-input-two');
+    const pvpRadioEl = document.querySelector('#pvp');
+    const aiEasyRadioEl = document.querySelector('#ai-easy');
     
 
     newGameEl.addEventListener('click', (e) => {
@@ -43,6 +59,11 @@ const displayController = (() => {
         if(playerOneNameEl.value !== "" && playerTwoNameEl.value !== ""){
             gameController.setPlayers(playerOneNameEl.value, playerTwoNameEl.value);
         }
+        if(pvpRadioEl.checked){
+            gameController.setGameMode(pvpRadioEl.value);
+        } else if(aiEasyRadioEl.checked){
+            gameController.setGameMode(aiEasyRadioEl.value);
+        }
         
         initializeBoard();
 
@@ -51,7 +72,7 @@ const displayController = (() => {
     const initializeBoard = () => {
         cells.forEach(cell => {
             cell.addEventListener('click', (e) => {
-                gameController.playRound(e.target.dataset.index);
+                gameController.playRound(e.target);
                 
             })
         })
@@ -61,9 +82,15 @@ const displayController = (() => {
 const gameController = (() => {
     const playerOne = Player('PlayerOne', 'X');
     const playerTwo = Player('PlayerTwo', 'O');
+    let gameMode;
+    let currentPlayer = playerOne;
 
-    const playRound = (cellIndex) => {
-        console.log(cellIndex);
+    const playRound = (cellEvent) => {
+        if(gameMode === 'pvp'){
+            
+            playPlayerVsPlayerRound(cellEvent);
+        }
+       
         
     }
 
@@ -73,5 +100,18 @@ const gameController = (() => {
         
     }
 
-    return {playRound, setPlayers};
+    const setGameMode = (newGameMode) => {
+        gameMode = newGameMode;
+    }
+
+    const playPlayerVsPlayerRound = (cellEvent) => {
+        if(cellEvent.innerText === "X" || cellEvent.innerText === "O"){
+            return;
+        } else {
+            cellEvent.innerText = currentPlayer.getMark();
+        }
+
+    }
+
+    return {playRound, setPlayers, setGameMode};
 })();
