@@ -28,7 +28,13 @@ const gameBoard = (() => {
         return board[cellIndex];
     }
 
-    return {setBoard, getBoard};
+    const resetBoard = () => {
+        for(let i = 0; i < board.length; i++){
+            board[i] = "";
+        }
+    }
+
+    return {setBoard, getBoard, resetBoard};
 })();
 
 const displayController = (() => {
@@ -72,7 +78,8 @@ const displayController = (() => {
             gameInfoEl.innerText = `It's ${gameController.getCurrentPlayerName()}'s turn`;
             modalEl.style.display = "none";
             gameBoardEl.classList.add('fade');
-            
+
+            gameBoard.resetBoard();
             resetDisplay();
             initializeBoard();
         }
@@ -83,7 +90,11 @@ const displayController = (() => {
     const initializeBoard = () => {
         cells.forEach(cell => {
             cell.addEventListener('click', (e) => {
+                if(gameController.gameOver()) return;
+
                 gameController.playRound(e.target);
+                
+                
                 
             })
         })
@@ -93,13 +104,17 @@ const displayController = (() => {
         gameInfoEl.innerText = `It's ${currentPlayerName}'s turn`;
     }
 
+    const updateGameInfoWinner = (currentPlayerName) => {
+        gameInfoEl.innerText = `${currentPlayerName} has won!`
+    }
+
     const resetDisplay = () => {
         cells.forEach(cell => {
             cell.innerText = "";
         })
     }
 
-    return {updateGameInfoPlayer};
+    return {updateGameInfoPlayer, updateGameInfoWinner};
 })();
 
 const gameController = (() => {
@@ -107,6 +122,7 @@ const gameController = (() => {
     const playerTwo = Player('PlayerTwo', 'O');
     let gameMode;
     let currentPlayer = playerOne;
+    let isGameOver = false;
 
     const winConditions = [
         [0,1,2],
@@ -121,17 +137,13 @@ const gameController = (() => {
 
     const playRound = (cellEvent) => {
         if(gameMode === 'pvp'){
-            
             playPlayerVsPlayerRound(cellEvent);
-        }
-       
-        
+        }      
     }
 
     const setPlayers = (playerOneName, playerTwoName) => {
         playerOne.setName(playerOneName);
         playerTwo.setName(playerTwoName);
-        
     }
 
     const getCurrentPlayerName = () => {
@@ -142,8 +154,7 @@ const gameController = (() => {
         gameMode = newGameMode;
     }
 
-    const playPlayerVsPlayerRound = (cellEvent) => {
-        
+    const playPlayerVsPlayerRound = (cellEvent) => { 
         if(cellEvent.innerText === "X" || cellEvent.innerText === "O"){
             return;
         } else {
@@ -151,13 +162,12 @@ const gameController = (() => {
         }
         gameBoard.setBoard(cellEvent.dataset.index, currentPlayer.getMark());
         if(checkForWin()){
-            console.log("win");
-        } else {
-            console.log("no win yet");
-        }
+            isGameOver = true;
+            displayController.updateGameInfoWinner(currentPlayer.getName());
+            return;
+        } 
         currentPlayer = currentPlayer.getMark() === 'X' ? playerTwo : playerOne;
         displayController.updateGameInfoPlayer(currentPlayer.getName());
-        
     }
 
     const checkForWin = () => {
@@ -173,9 +183,14 @@ const gameController = (() => {
         return hasWon;
     }
 
-    const resetGame = () => {
-        currentPlayer = playerOne;
+    const gameOver = () => {
+        return isGameOver;
     }
 
-    return {playRound, setPlayers, setGameMode, getCurrentPlayerName, resetGame};
+    const resetGame = () => {
+        currentPlayer = playerOne;
+        isGameOver = false;
+    }
+
+    return {playRound, setPlayers, setGameMode, getCurrentPlayerName, resetGame, gameOver};
 })();
