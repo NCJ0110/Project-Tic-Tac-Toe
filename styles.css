@@ -112,10 +112,18 @@ form button {
     opacity: 1;
 }
 
+
+
 .cell {
     border: 1px solid black;
     width: var(--cell-size);
     height: var(--cell-size);
+    font-size: 128px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
 }
 
 

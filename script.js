@@ -54,6 +54,7 @@ const displayController = (() => {
 
     startGameBtnEl.addEventListener('click', (e) => {
         e.preventDefault();
+        resetDisplay();
         modalEl.style.display = "none";
         gameBoardEl.classList.add('fade');
         if(playerOneNameEl.value !== "" && playerTwoNameEl.value !== ""){
@@ -77,6 +78,12 @@ const displayController = (() => {
             })
         })
     } 
+
+    const resetDisplay = () => {
+        cells.forEach(cell => {
+            cell.innerText = "";
+        })
+    }
 })();
 
 const gameController = (() => {
@@ -110,8 +117,10 @@ const gameController = (() => {
         } else {
             cellEvent.innerText = currentPlayer.getMark();
         }
-
+        currentPlayer = currentPlayer.getMark() === 'X' ? playerTwo : playerOne;
     }
+
+    
 
     return {playRound, setPlayers, setGameMode};
 })();
