@@ -39,6 +39,7 @@ const gameBoard = (() => {
 
 const displayController = (() => {
     const newGameEl = document.querySelector('.new-game');
+    const resetGameEl = document.querySelector('.reset-game');
     const closeModalEl = document.querySelector('.close-modal');
     const modalEl = document.querySelector('.modal-container');
     const startGameBtnEl = document.querySelector('.start-game-btn');
@@ -83,19 +84,23 @@ const displayController = (() => {
             resetDisplay();
             initializeBoard();
         }
-       
-
     })
+
+    resetGameEl.addEventListener('click', (e) => {
+        resetDisplay();
+        gameController.resetGame();
+        gameBoard.resetBoard();
+        gameInfoEl.innerText = `It's ${gameController.getCurrentPlayerName()}'s turn`;
+    })
+
+    
 
     const initializeBoard = () => {
         cells.forEach(cell => {
             cell.addEventListener('click', (e) => {
                 if(gameController.gameOver()) return;
-
                 gameController.playRound(e.target);
-                
-                
-                
+                           
             })
         })
     } 
@@ -138,7 +143,7 @@ const gameController = (() => {
     const playRound = (cellEvent) => {
         if(gameMode === 'pvp'){
             playPlayerVsPlayerRound(cellEvent);
-        }      
+        }     
     }
 
     const setPlayers = (playerOneName, playerTwoName) => {
@@ -146,12 +151,12 @@ const gameController = (() => {
         playerTwo.setName(playerTwoName);
     }
 
-    const getCurrentPlayerName = () => {
-        return currentPlayer.getName();
-    }
-
     const setGameMode = (newGameMode) => {
         gameMode = newGameMode;
+    }
+
+    const getCurrentPlayerName = () => {
+        return currentPlayer.getName();
     }
 
     const playPlayerVsPlayerRound = (cellEvent) => { 
@@ -169,6 +174,7 @@ const gameController = (() => {
         currentPlayer = currentPlayer.getMark() === 'X' ? playerTwo : playerOne;
         displayController.updateGameInfoPlayer(currentPlayer.getName());
     }
+
 
     const checkForWin = () => {
         let hasWon = false;
