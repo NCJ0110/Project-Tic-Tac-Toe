@@ -68,9 +68,11 @@ const displayController = (() => {
             } else if(aiEasyRadioEl.checked){
                 gameController.setGameMode(aiEasyRadioEl.value);
             }
-            gameInfoEl.innerText = `It is ${gameController.getCurrentPlayerName()}'s turn`;
+            gameController.resetGame();
+            gameInfoEl.innerText = `It's ${gameController.getCurrentPlayerName()}'s turn`;
             modalEl.style.display = "none";
             gameBoardEl.classList.add('fade');
+            
             resetDisplay();
             initializeBoard();
         }
@@ -88,7 +90,7 @@ const displayController = (() => {
     } 
 
     const updateGameInfoPlayer = (currentPlayerName) => {
-        gameInfoEl.innerText = `It is ${currentPlayerName}'s turn`;
+        gameInfoEl.innerText = `It's ${currentPlayerName}'s turn`;
     }
 
     const resetDisplay = () => {
@@ -106,16 +108,16 @@ const gameController = (() => {
     let gameMode;
     let currentPlayer = playerOne;
 
-    // const winConditions = [
-    //     [0,1,2],
-    //     [3,4,5],
-    //     [6,7,8],
-    //     [0,3,6],
-    //     [1,4,7],
-    //     [2,5,8],
-    //     [0,4,8],
-    //     [2,4,6]
-    // ]
+    const winConditions = [
+        [0,1,2],
+        [3,4,5],
+        [6,7,8],
+        [0,3,6],
+        [1,4,7],
+        [2,5,8],
+        [0,4,8],
+        [2,4,6]
+    ]
 
     const playRound = (cellEvent) => {
         if(gameMode === 'pvp'){
@@ -141,15 +143,39 @@ const gameController = (() => {
     }
 
     const playPlayerVsPlayerRound = (cellEvent) => {
+        
         if(cellEvent.innerText === "X" || cellEvent.innerText === "O"){
             return;
         } else {
             cellEvent.innerText = currentPlayer.getMark();
         }
-        
+        gameBoard.setBoard(cellEvent.dataset.index, currentPlayer.getMark());
+        if(checkForWin()){
+            console.log("win");
+        } else {
+            console.log("no win yet");
+        }
         currentPlayer = currentPlayer.getMark() === 'X' ? playerTwo : playerOne;
         displayController.updateGameInfoPlayer(currentPlayer.getName());
+        
     }
 
-    return {playRound, setPlayers, setGameMode, getCurrentPlayerName};
+    const checkForWin = () => {
+        let hasWon = false;
+        winConditions.forEach(condition => {
+            if(gameBoard.getBoard(condition[0]) === currentPlayer.getMark() &&
+               gameBoard.getBoard(condition[1]) === currentPlayer.getMark() &&
+               gameBoard.getBoard(condition[2]) === currentPlayer.getMark()) {
+                hasWon = true;
+               } 
+        })
+
+        return hasWon;
+    }
+
+    const resetGame = () => {
+        currentPlayer = playerOne;
+    }
+
+    return {playRound, setPlayers, setGameMode, getCurrentPlayerName, resetGame};
 })();

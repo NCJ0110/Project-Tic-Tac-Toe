@@ -84,8 +84,7 @@ form button {
 .game-info-container {
     display: flex;
     justify-content: center;
-    align-items: center;
-    border: 1px solid black;
+    align-items: center; 
     height: 100px;
     width: 600px;
 }
