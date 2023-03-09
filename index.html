@@ -13,6 +13,7 @@
         <h1>Tic-Tac-Toe</h1>
         <div class="game-options">
             <button class="new-game">New Game</button>
+            <button class="reset-game">Reset Game</button>
         </div>
     </header>
     <main>
@@ -47,11 +48,16 @@
                 <div class="game-mode">
                     <fieldset>
                         <legend>Game Mode</legend>
-                        <input type="radio" id="pvp" name="game-mode" value="pvp" checked>
-                        <label for="pvp">Player vs Player</label>
-
-                        <input type="radio" id="ai-easy" name="game-mode" value="ai-easy">
-                        <label for="ai">AI</label>
+                        <div>
+                            <input type="radio" id="pvp" name="game-mode" value="pvp" checked>
+                            <label for="pvp">Player vs Player</label>
+                        </div>
+                        
+                        <div>
+                            <input type="radio" id="ai-easy" name="game-mode" value="ai-easy">
+                            <label for="ai-easy">Easy AI</label>
+                        </div>
+                        
                     </fieldset>
                 </div>
                 <div class="submit">

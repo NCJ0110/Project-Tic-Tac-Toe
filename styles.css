@@ -28,6 +28,7 @@ header h1 {
     padding: 10px;
     letter-spacing: 5px;
     text-decoration: underline;
+    user-select: none;
 }
 
 header .game-options {
@@ -36,8 +37,11 @@ header .game-options {
     align-items: center;
 }
 
-header .new-game {
+header .new-game, .reset-game {
     padding: 10px 20px;
+    font-weight: bold;
+    font-size: 20px;
+    margin-right: 10px;
 }
 
 main {
@@ -72,6 +76,11 @@ form input[type="text"] {
     padding: 8px 10px;
     margin-top: 10px;
     font-size: 20px;
+    
+}
+
+form label {
+    user-select: none;
 }
 
 form button {
@@ -80,6 +89,20 @@ form button {
     padding: 10px 20px;
     font-weight: bold;
 }
+
+fieldset{
+    padding: 10px;
+    display: flex;
+    justify-content: flex-start;
+    gap: 30px;
+    user-select: none;
+}
+
+fieldset label {
+    margin-top: 5px;
+}
+
+
 
 .game-info-container {
     display: flex;
@@ -92,6 +115,7 @@ form button {
 .game-info {
     font-size: 36px;
     letter-spacing: 3px;
+    user-select: none;
 }
 
 .modal-container {
@@ -110,8 +134,7 @@ form button {
 .modal {
     background-color: rgba(255,255,255, 0.9);
     width: 400px;
-    height: 400px;
-    
+    height: 450px;
     padding: 20px;
 }
 
@@ -129,7 +152,8 @@ form button {
 
 
 .cell {
-    border: 1px solid black;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
     width: var(--cell-size);
     height: var(--cell-size);
     font-size: 128px;
@@ -138,6 +162,14 @@ form button {
     align-items: center;
     cursor: pointer;
     user-select: none;
+}
+
+.cell:nth-child(3n){
+    border-right: none;
+}
+
+.cell:nth-child(6) ~ .cell {
+    border-bottom: none;
 }
 
 
