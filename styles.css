@@ -42,6 +42,7 @@ header .new-game {
 
 main {
     display: flex;
+    flex-direction: column;
     height: clamp(720px, 50%, calc(100% - var(--header-height)));
     justify-content: center;
     align-items: center;
@@ -78,6 +79,20 @@ form button {
     margin: 0 auto;
     padding: 10px 20px;
     font-weight: bold;
+}
+
+.game-info-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    height: 100px;
+    width: 600px;
+}
+
+.game-info {
+    font-size: 36px;
+    letter-spacing: 3px;
 }
 
 .modal-container {

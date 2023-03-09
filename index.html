@@ -16,6 +16,9 @@
         </div>
     </header>
     <main>
+        <div class="game-info-container">
+            <p class="game-info"></p>
+        </div>
         <div class="gameboard">
             <div class="cell" data-index="0"></div>
             <div class="cell" data-index="1"></div>
@@ -35,16 +38,16 @@
                 <span class="close-modal">X</span>
                 <div class="name-input-one">
                     <label for="name-input-one">Player One</label>
-                    <input type="text" id="name-input-one" >
+                    <input type="text" id="name-input-one" maxlength="16">
                 </div>
                 <div class="name-input-two">
                     <label for="name-input-two">Player Two</label>
-                    <input type="text" id="name-input-two" >
+                    <input type="text" id="name-input-two" maxlength="16">
                 </div>
                 <div class="game-mode">
                     <fieldset>
                         <legend>Game Mode</legend>
-                        <input type="radio" id="pvp" name="game-mode" value="pvp">
+                        <input type="radio" id="pvp" name="game-mode" value="pvp" checked>
                         <label for="pvp">Player vs Player</label>
 
                         <input type="radio" id="ai-easy" name="game-mode" value="ai-easy">
