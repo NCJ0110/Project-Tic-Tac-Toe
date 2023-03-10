@@ -196,6 +196,12 @@ fieldset label {
     main > div {
         margin-bottom: 100px;
     }
+
+    .game-info {
+        font-size: 25px;
+        letter-spacing: 3px;
+        user-select: none;
+    }
 }
 
 
