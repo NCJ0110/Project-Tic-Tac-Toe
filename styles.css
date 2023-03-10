@@ -173,3 +173,9 @@ fieldset label {
 }
 
 
+@media screen and (max-width: 600px){
+    :root {
+        --cell-size: 125px;
+    }
+}
+

@@ -91,6 +91,9 @@ const displayController = (() => {
         resetDisplay();
         gameController.resetGame();
         gameBoard.resetBoard();
+        if(gameController.getCurrentPlayerName() === 'PlayerOne'){
+            return;
+        }
         gameInfoEl.innerText = `It's ${gameController.getCurrentPlayerName()}'s turn`;
     })
 
@@ -133,13 +136,17 @@ const displayController = (() => {
         gameInfoEl.innerText = `${currentPlayerName} has won!`
     }
 
+    const updateGameInfoDraw = () => {
+        gameInfoEl.innerText = `It is a draw, play again?`
+    }
+
     const resetDisplay = () => {
         cells.forEach(cell => {
             cell.innerText = "";
         })
     }
 
-    return {updateGameInfoPlayer, updateGameInfoWinner, checkAvailable};
+    return {updateGameInfoPlayer, updateGameInfoWinner,updateGameInfoDraw, checkAvailable};
 })();
 
 const gameController = (() => {
@@ -149,6 +156,7 @@ const gameController = (() => {
     let currentPlayer = playerOne;
     let isGameOver = false;
     let isPlayersTurn = true;
+    let round = 1;
 
     const winConditions = [
         [0,1,2],
@@ -167,9 +175,12 @@ const gameController = (() => {
         }   
         if(gameMode === 'ai-easy'){
             playPlayerVsPlayerRound(cellEvent);
-            if(!isPlayersTurn && !isGameOver){
-                playAIEasyRound();
-            }
+            setTimeout(() => {
+                if(!isPlayersTurn && !isGameOver){
+                    playAIEasyRound();
+                }
+            }, 1000);
+            
             
             
         }  
@@ -201,8 +212,14 @@ const gameController = (() => {
             displayController.updateGameInfoWinner(currentPlayer.getName());
             return;
         } 
+        if(checkForDraw()){
+            isGameOver = true;
+            displayController.updateGameInfoDraw();
+            return;
+        }
         currentPlayer = currentPlayer.getMark() === 'X' ? playerTwo : playerOne;
         displayController.updateGameInfoPlayer(currentPlayer.getName());
+        round++;
     }
 
     const playAIEasyRound = () => {
@@ -221,9 +238,16 @@ const gameController = (() => {
         
         return;
       }
+      if(checkForDraw()){
+        isGameOver = true;
+        displayController.updateGameInfoDraw();
+        return;
+    }
 
       currentPlayer = currentPlayer.getMark() === 'X' ? playerTwo : playerOne;
+      displayController.updateGameInfoPlayer(currentPlayer.getName());
       isPlayersTurn = true;
+      round++;
     }
 
 
@@ -240,6 +264,12 @@ const gameController = (() => {
         return hasWon;
     }
 
+    const checkForDraw = () => {
+        if(round >= 9){
+            return true;
+        }
+    }
+
     const gameOver = () => {
         return isGameOver;
     }
@@ -247,6 +277,7 @@ const gameController = (() => {
     const resetGame = () => {
         currentPlayer = playerOne;
         isGameOver = false;
+        round = 1;
     }
 
     return {playRound, setPlayers, setGameMode, getCurrentPlayerName, resetGame, gameOver};
