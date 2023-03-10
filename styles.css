@@ -13,6 +13,7 @@
 
 body {
     height: 100vh;
+    overflow-x: hidden;
     font-family: 'Roboto';
 }
 
@@ -173,9 +174,27 @@ fieldset label {
 }
 
 
-@media screen and (max-width: 600px){
+@media screen and (max-width: 700px){
     :root {
-        --cell-size: 125px;
+        --cell-size: 140px;
+    }
+    .cell {
+        font-size: 100px;
     }
 }
+
+@media screen and (max-width: 440px){
+    :root {
+        --cell-size: 110px;
+    }
+
+    .cell {
+        font-size: 92px;
+    }
+
+    main > div {
+        margin-bottom: 100px;
+    }
+}
+
 
